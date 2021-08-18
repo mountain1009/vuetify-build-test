@@ -32,6 +32,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    'nuxt-purgecss',
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/stylelint
@@ -75,5 +76,37 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+  purgeCSS: {
+    enabled: true,
+    paths: [
+      'components/**/*.vue',
+      'layouts/**/*.vue',
+      'pages/**/*.vue',
+      'plugins/**/*.js',
+      './node_modules/vuetify/dist/vuetify.js',
+      'assets/**/*.scss',
+    ],
+    styleExtensions: ['.css'],
+    whitelist: ['v-application', 'v-application--wrap', 'layout', 'row', 'col'],
+    whitelistPatterns: [
+      /^v-((?!application).)*$/,
+      /^theme--*/,
+      /.*-transition/,
+      /^justify-*/,
+      /^p*-[0-9]/,
+      /^m*-[0-9]/,
+      /^text--*/,
+      /--text$/,
+      /^row-*/,
+      /^col-*/,
+    ],
+    whitelistPatternsChildren: [/^v-((?!application).)*$/, /^theme--*/],
+    extractors: [
+      {
+        extractor: (content) => content.match(/[A-z0-9-:\\/]+/g) || [],
+        extensions: ['html', 'vue', 'js'],
+      },
+    ],
+  },
 }
